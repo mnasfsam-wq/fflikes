@@ -1,91 +1,55 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-
+<html lang="ar" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Likes Bot</title>
+    <title>MOSSLIM  - Likes Bot</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        dark: {
-                            bg: '#0f172a',
-                            card: '#1e293b',
-                            input: '#334155',
-                        }
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out',
-                        'slide-up': 'slideUp 0.5s ease-out',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        body {
-            background-color: #0f172a;
-            background-image:
-                radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
-                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
-                radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
-            background-attachment: fixed;
-        }
-
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .input-field {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .input-field:focus {
-            border-color: #818cf8;
-            box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.2);
-            background: rgba(15, 23, 42, 0.8);
-        }
+        body { background-color: #0f172a; background-image: radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%); background-attachment: fixed; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .input-field { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: white; }
     </style>
 </head>
-
 <body class="min-h-screen flex items-center justify-center p-4 text-slate-200">
 
-    <div id="maintenanceOverlay"
-        class="fixed inset-0 z-50 bg-slate-900/90 backdrop-blur-sm flex items-center justify-center hidden">
-        <div class="text-center p-8 rounded-2xl bg-slate-800 border border-slate-700 shadow-2xl max-w-md mx-4">
-            <div class="mb-4">
-                <svg class="w-16 h-16 text-indigo-500 mx-auto animate-spin" xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                    </path>
-                </svg>
+    <div class="glass-panel rounded-2xl w-full max-w-lg p-8 relative overflow-hidden">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">Send Likes</h1>
+            <p class="text-slate-400 text-sm">Boost your Free Fire Likes instantly</p>
+        </div>
+
+        <form id="likesForm" class="space-y-6">
+            <div>
+                <label class="block text-xs font-semibold text-indigo-300 uppercase mb-2">Account ID</label>
+                <input type="text" id="id" name="id" required placeholder="e.g., 123456789" class="input-field w-full px-4 py-3 rounded-xl outline-none">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-indigo-300 uppercase mb-2">Coupon Code</label>
+                <div class="relative">
+                    <input type="text" id="coupon" name="coupon" required placeholder="أدخل الكوبون هنا" class="input-field w-full px-4 py-3 rounded-xl outline-none pr-10">
+                    <div id="couponStatusIcon" class="absolute right-3 top-1/2 -translate-y-1/2 hidden"></div>
+                </div>
+                <div id="couponFeedback" class="mt-2 text-xs hidden"></div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 p-3 rounded-xl font-bold hover:scale-105 transition-transform">
+                Start Sending
+            </button>
+        </form>
+
+        <div id="resultArea" class="mt-6 hidden p-4 bg-slate-800/50 rounded-xl border border-indigo-500/30">
+            <h3 id="statusHeader" class="font-bold"></h3>
+            <pre id="responseText" class="text-xs mt-2 text-indigo-200 whitespace-pre-wrap"></pre>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>                </svg>
             </div>
             <h2 class="text-2xl font-bold text-white mb-2">System Maintenance</h2>
             <p class="text-slate-400">We are currently updating security tokens to ensure service quality. This process
